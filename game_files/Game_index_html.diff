@@ -1,0 +1,105 @@
+465a466,467
+> <script src="js/model-loader.js"></script>
+> <script src="js/collision-system.js"></script>
+1220,1222c1222,1227
+<   const AIRCRAFT_MODEL_FILES = {ki10:'00_Ki-10II.glb',a6m2:'01_A6M2.glb',n1k2:'02_N1K2J.glb',jf86:'03_F86.glb',jf104:'04_F104.glb',jf4:'05_F4.glb',f2a:'06_F-2A.glb',i153:'07_I153.glb',la5:'08_La5.glb',la9:'09_La9.glb',mig15:'10_MiG15.glb',mig21bis:'11_MiG21bis.glb',mig23ml:'12_MiG23ML.glb',su30:'13_Su30.glb',su35s:'14_Su35S.glb',su57:'15_Su57.glb',cr42:'16_CR42.glb',bf109e:'17_Bf109E.glb',fw190d9:'18_Fw190D-9.glb',mig15de:'19_MiG15bis.glb',mig21de:'20_MiG21MF.glb',mig23de:'21_MiG23.glb',mig29de:'22_MiG29.glb',cl13:'23_CL-13.glb',f104de:'24_F104.glb',f4de:'25_F4.glb',ef2000:'26_EF2000.glb',bf2c:'27_BF2C.glb',f4f:'28_F4F.glb',p51:'29_P-51.glb',f86:'30_F86.glb',f104:'31_F104.glb',f4:'32_F4.glb',f16adf:'33_F-16ADF.glb',f16pobit:'34_F-16PoBIT.glb',f35:'35_F-35.glb',f15c:'36_F-15C.glb',f15ex:'37_F-15EX.glb',f22:'38_F-22.glb',f14:'39_F-14.glb',f18e:'40_F-18E.glb',j8a:'41_J8A.glb',j22:'42_J22.glb',j21ra:'43_J21RA.glb',vampire:'44_aircraft.glb',finmig21:'45_MiG21bis.glb',ja37c:'46_JA37C.glb',f16am:'47_F-16AM.glb',jas39e:'48_JAS39E.glb',f18mlu2:'49_F-18MLU2.glb',i15bis:'50_I15bis.glb',p51cn:'51_P-51.glb',ki84:'52_Ki84ko.glb',j4:'53_J-4.glb',f104cn:'54_F104.glb',f5e:'55_F-5E.glb',f16mlu:'56_F-16MLU.glb',m2000:'57_Mirage2000-5Ei.glb',j8b:'58_J-8B.glb',j10a:'59_J-10A.glb',j16:'60_J-16.glb',j20:'61_J-20.glb'};
+<   const aircraftModelCache = new Map();
+<   const aircraftGltfLoader = new THREE.GLTFLoader();
+---
+>   // ------------------------------------------------------------------
+>   // 外部モデル / 外部当たり判定  (js/model-loader.js, js/collision-system.js)
+>   //   機体ID → GLB / 当たり判定JSON の対応は models/models.json で管理（HTML編集は不要）
+>   //   外部ファイルが無い・壊れている場合は従来の手続き生成モデル＋球判定のまま動作する
+>   // ------------------------------------------------------------------
+>   const EXT = window.GameExt || null;
+1224,1236c1229
+<     const filename = AIRCRAFT_MODEL_FILES[spec.id]; if (!filename) return;
+<     let promise = aircraftModelCache.get(filename);
+<     if (!promise) { promise = new Promise((resolve,reject) => aircraftGltfLoader.load(`aircraft_glb_collection/${filename}`,g=>resolve(g.scene),undefined,reject)); aircraftModelCache.set(filename,promise); }
+<     promise.then(source => {
+<       if (!target.parent) return;
+<       const model = source.clone(true); model.rotation.y = -Math.PI / 2;
+<       const box = new THREE.Box3().setFromObject(model); const size = box.getSize(new THREE.Vector3());
+<       const scale = 11 / Math.max(size.x,size.y,size.z); model.scale.setScalar(scale);
+<       box.setFromObject(model); const center = box.getCenter(new THREE.Vector3()); model.position.sub(center);
+<       model.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+<       for (let i=target.children.length-1;i>=0;i--) { const child=target.children[i]; target.remove(child); }
+<       target.add(model); target.userData.glbModel = model;
+<     }).catch(()=>{});
+---
+>     if (EXT && EXT.models) EXT.models.attach(target, spec.id);
+1237a1231,1250
+>   // 弾の命中判定: 外部JSON判定があればそれを使い、無ければ従来の球判定。命中時は着弾位置、外れは null
+>   function acBulletHit(ac, a, b, legacyRadius) {
+>     const c = EXT && EXT.collision;
+>     if (c) {
+>       const r = c.segmentHit(ac, a, b);
+>       if (r !== null) return r ? new THREE.Vector3(c.lastHit.x, c.lastHit.y, c.lastHit.z) : null;
+>     }
+>     return pointToSegmentDistSq(ac.pos, a, b) <= legacyRadius * legacyRadius ? b : null;
+>   }
+>   // 機体同士の接触判定: 外部JSON判定があればそれを使い、無ければ従来の中心間距離8.5m
+>   function acBodyContact(a, b, d2) {
+>     const c = EXT && EXT.collision;
+>     if (c) { const r = c.bodyOverlap(a, b); if (r !== null) return r; }
+>     return d2 <= 8.5 * 8.5;
+>   }
+>   if (EXT && EXT.models) {
+>     EXT.models.init();                                   // models/models.json の読み込み開始
+>     try { EXT.models.prefetch(saveState.deck.filter(Boolean)); } catch (e) {}   // 配備機体を先読み
+>   }
+>   if (EXT && EXT.collision && /[?&]colDebug=1/.test(location.search)) EXT.collision.enableDebug(scene);  // 判定の可視化(URLパラメータのみ)
+1438a1452
+>       applyAircraftModel(this.mesh, this.spec);
+1671c1685,1689
+<       if (hitPos) {
+---
+>       const extPart = (hitPos && EXT && EXT.collision) ? EXT.collision.partAt(this, hitPos) : null;   // 外部JSON判定の部位(無ければ null)
+>       if (extPart) {
+>         hitMod = extPart.module;
+>         dmg *= extPart.damageMultiplier;
+>       } else if (hitPos) {
+2159c2177
+<       if (d2 > 8.5 * 8.5) continue;
+---
+>       if (!acBodyContact(a, b, d2)) continue;
+2182c2200,2201
+<         if (pointToSegmentDistSq(ac.pos, b.prevPos, b.pos) <= hitRadius * hitRadius) {
+---
+>         const hitAt = acBulletHit(ac, b.prevPos, b.pos, hitRadius);
+>         if (hitAt) {
+2184,2185c2203,2204
+<           ac.takeDamage(b.owner.spec.damage * dmgMult, b.owner, b.pos, 'bullet');
+<           spawnSpark(b.pos); hit = true; break;
+---
+>           ac.takeDamage(b.owner.spec.damage * dmgMult, b.owner, hitAt, 'bullet');
+>           spawnSpark(hitAt); hit = true; break;
+3530a3550
+>   let sortiePending = false;
+3532,3536c3552,3569
+<     if (gameState === 'dead_wait') {
+<       playerStats.respawnsLeft--;
+<       player.applySpec(getPlaneById(saveState.deck[saveState.activeSlot]));
+<       player.spawn(); updateTeamTickets(); beginSortie();
+<     } else startNewMatch();
+---
+>     if (sortiePending) return;
+>     const launch = () => {
+>       sortiePending = false;
+>       if (gameState === 'dead_wait') {
+>         playerStats.respawnsLeft--;
+>         player.applySpec(getPlaneById(saveState.deck[saveState.activeSlot]));
+>         player.spawn(); updateTeamTickets(); beginSortie();
+>       } else startNewMatch();
+>     };
+>     // 外部モデルの読み込み完了を待ってから出撃（失敗/タイムアウトしても従来モデルで必ず出撃する）
+>     if (!(EXT && EXT.models)) { launch(); return; }
+>     let ids = [];
+>     try {
+>       const sp = getPlaneById(saveState.deck[saveState.activeSlot]);
+>       ids = [sp.id].concat(TECH_TREE.filter(p => p.gen === sp.gen).map(p => p.id));   // 自機 + 同世代のAI候補
+>     } catch (e) {}
+>     sortiePending = true;
+>     EXT.models.whenReady(ids).then(launch, launch);
+3646a3680
+>       if (EXT && EXT.collision) EXT.collision.debugUpdate(aircrafts);
