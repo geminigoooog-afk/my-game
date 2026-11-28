@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "units": "game-meters (entity local, model scaled to 11m max dimension)",
+  "coordinateSystem": "+Z=nose, +Y=up, +X=left wing; origin=model bounding-box center",
+  "margin": {"player": 1.5, "ai": 3.2, "body": 1.5},
+  "name": "Ki84ko",
+  "colliders": [
+    {"id": "fuselage", "type": "capsule", "target": "fuselage", "module": "fuselage", "position": [0.0, 0.0, -0.1], "rotation": [0, 0, 0], "size": {"radius": 0.76, "length": 9.52, "axis": "z"}, "damageMultiplier": 1.0, "priority": 1},
+    {"id": "engine", "type": "sphere", "target": "engine", "module": "engine", "position": [0.0, 0.0, 3.34], "rotation": [0, 0, 0], "size": {"radius": 1.01}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "cockpit", "type": "sphere", "target": "cockpit", "module": "controls", "position": [0.0, 0.41, 1.42], "rotation": [0, 0, 0], "size": {"radius": 0.56}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "fuelTank", "type": "box", "target": "fuelTank", "module": "fuelTank", "position": [0.0, 0.0, -0.41], "rotation": [0, 0, 0], "size": {"x": 1.06, "y": 1.06, "z": 2.03}, "damageMultiplier": 1.0, "priority": 2},
+    {"id": "wingL", "type": "box", "target": "wingL", "module": "wingL", "position": [3.3, 0.0, 0.2], "rotation": [0, 0, 0], "size": {"x": 4.4, "y": 0.25, "z": 2.03}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "wingR", "type": "box", "target": "wingR", "module": "wingR", "position": [-3.3, 0.0, 0.2], "rotation": [0, 0, 0], "size": {"x": 4.4, "y": 0.25, "z": 2.03}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "hTail", "type": "box", "target": "hTail", "module": "hTail", "position": [0.0, 0.0, -4.15], "rotation": [0, 0, 0], "size": {"x": 3.3, "y": 0.25, "z": 1.22}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "vTail", "type": "box", "target": "vTail", "module": "vTail", "position": [0.0, 0.72, -3.95], "rotation": [0, 0, 0], "size": {"x": 0.44, "y": 1.38, "z": 1.42}, "damageMultiplier": 1.0, "priority": 3}
+  ]
+}

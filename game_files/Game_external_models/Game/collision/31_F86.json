@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "units": "game-meters (entity local, model scaled to 11m max dimension)",
+  "coordinateSystem": "+Z=nose, +Y=up, +X=left wing; origin=model bounding-box center",
+  "margin": {"player": 1.5, "ai": 3.2, "body": 1.5},
+  "name": "F86",
+  "colliders": [
+    {"id": "fuselage", "type": "capsule", "target": "fuselage", "module": "fuselage", "position": [0.0, 0.0, -0.11], "rotation": [0, 0, 0], "size": {"radius": 0.82, "length": 10.34, "axis": "z"}, "damageMultiplier": 1.0, "priority": 1},
+    {"id": "nose", "type": "sphere", "target": "nose", "module": "radar", "position": [0.0, 0.0, 3.63], "rotation": [0, 0, 0], "size": {"radius": 0.77}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "engine", "type": "capsule", "target": "engine", "module": "engine", "position": [0.0, 0.0, -3.74], "rotation": [0, 0, 0], "size": {"radius": 0.77, "length": 3.08, "axis": "z"}, "damageMultiplier": 1.0, "priority": 2},
+    {"id": "cockpit", "type": "sphere", "target": "cockpit", "module": "controls", "position": [0.0, 0.44, 1.54], "rotation": [0, 0, 0], "size": {"radius": 0.6}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "fuelTank", "type": "box", "target": "fuelTank", "module": "fuelTank", "position": [0.0, 0.0, -0.44], "rotation": [0, 0, 0], "size": {"x": 1.15, "y": 1.15, "z": 2.2}, "damageMultiplier": 1.0, "priority": 2},
+    {"id": "wingL", "type": "box", "target": "wingL", "module": "wingL", "position": [3.27, 0.0, -0.66], "rotation": [0, 0, 0], "size": {"x": 4.36, "y": 0.25, "z": 2.64}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "wingR", "type": "box", "target": "wingR", "module": "wingR", "position": [-3.27, 0.0, -0.66], "rotation": [0, 0, 0], "size": {"x": 4.36, "y": 0.25, "z": 2.64}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "hTail", "type": "box", "target": "hTail", "module": "hTail", "position": [0.0, 0.0, -4.51], "rotation": [0, 0, 0], "size": {"x": 3.27, "y": 0.25, "z": 1.32}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "vTail", "type": "box", "target": "vTail", "module": "vTail", "position": [0.0, 0.69, -4.29], "rotation": [0, 0, 0], "size": {"x": 0.44, "y": 1.31, "z": 1.54}, "damageMultiplier": 1.0, "priority": 3}
+  ]
+}

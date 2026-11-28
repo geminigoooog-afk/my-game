@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "units": "game-meters (entity local, model scaled to 11m max dimension)",
+  "coordinateSystem": "+Z=nose, +Y=up, +X=left wing; origin=model bounding-box center",
+  "margin": {"player": 1.5, "ai": 3.2, "body": 1.5},
+  "name": "中華P-51",
+  "colliders": [
+    {"id": "fuselage", "type": "capsule", "target": "fuselage", "module": "fuselage", "position": [0.0, 0.0, -0.1], "rotation": [0, 0, 0], "size": {"radius": 0.77, "length": 9.7, "axis": "z"}, "damageMultiplier": 1.0, "priority": 1},
+    {"id": "engine", "type": "sphere", "target": "engine", "module": "engine", "position": [0.0, 0.0, 3.4], "rotation": [0, 0, 0], "size": {"radius": 1.03}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "cockpit", "type": "sphere", "target": "cockpit", "module": "controls", "position": [0.0, 0.41, 1.44], "rotation": [0, 0, 0], "size": {"radius": 0.57}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "fuelTank", "type": "box", "target": "fuelTank", "module": "fuelTank", "position": [0.0, 0.0, -0.41], "rotation": [0, 0, 0], "size": {"x": 1.08, "y": 1.08, "z": 2.06}, "damageMultiplier": 1.0, "priority": 2},
+    {"id": "wingL", "type": "box", "target": "wingL", "module": "wingL", "position": [3.3, 0.0, 0.21], "rotation": [0, 0, 0], "size": {"x": 4.4, "y": 0.25, "z": 2.06}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "wingR", "type": "box", "target": "wingR", "module": "wingR", "position": [-3.3, 0.0, 0.21], "rotation": [0, 0, 0], "size": {"x": 4.4, "y": 0.25, "z": 2.06}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "hTail", "type": "box", "target": "hTail", "module": "hTail", "position": [0.0, 0.0, -4.23], "rotation": [0, 0, 0], "size": {"x": 3.3, "y": 0.25, "z": 1.24}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "vTail", "type": "box", "target": "vTail", "module": "vTail", "position": [0.0, 0.73, -4.02], "rotation": [0, 0, 0], "size": {"x": 0.44, "y": 1.39, "z": 1.44}, "damageMultiplier": 1.0, "priority": 3}
+  ]
+}

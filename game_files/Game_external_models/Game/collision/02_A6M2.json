@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "units": "game-meters (entity local, model scaled to 11m max dimension)",
+  "coordinateSystem": "+Z=nose, +Y=up, +X=left wing; origin=model bounding-box center",
+  "margin": {"player": 1.5, "ai": 3.2, "body": 1.5},
+  "name": "A6M2",
+  "colliders": [
+    {"id": "fuselage", "type": "capsule", "target": "fuselage", "module": "fuselage", "position": [0.0, 0.0, -0.09], "rotation": [0, 0, 0], "size": {"radius": 0.65, "length": 8.15, "axis": "z"}, "damageMultiplier": 1.0, "priority": 1},
+    {"id": "engine", "type": "sphere", "target": "engine", "module": "engine", "position": [0.0, 0.0, 2.86], "rotation": [0, 0, 0], "size": {"radius": 0.87}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "cockpit", "type": "sphere", "target": "cockpit", "module": "controls", "position": [0.0, 0.35, 1.21], "rotation": [0, 0, 0], "size": {"radius": 0.48}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "fuelTank", "type": "box", "target": "fuelTank", "module": "fuelTank", "position": [0.0, 0.0, -0.35], "rotation": [0, 0, 0], "size": {"x": 0.91, "y": 0.91, "z": 1.73}, "damageMultiplier": 1.0, "priority": 2},
+    {"id": "wingL", "type": "box", "target": "wingL", "module": "wingL", "position": [3.3, 0.0, 0.17], "rotation": [0, 0, 0], "size": {"x": 4.4, "y": 0.25, "z": 1.73}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "wingR", "type": "box", "target": "wingR", "module": "wingR", "position": [-3.3, 0.0, 0.17], "rotation": [0, 0, 0], "size": {"x": 4.4, "y": 0.25, "z": 1.73}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "hTail", "type": "box", "target": "hTail", "module": "hTail", "position": [0.0, 0.0, -3.56], "rotation": [0, 0, 0], "size": {"x": 3.3, "y": 0.25, "z": 1.04}, "damageMultiplier": 1.0, "priority": 3},
+    {"id": "vTail", "type": "box", "target": "vTail", "module": "vTail", "position": [0.0, 0.6, -3.38], "rotation": [0, 0, 0], "size": {"x": 0.44, "y": 1.14, "z": 1.21}, "damageMultiplier": 1.0, "priority": 3}
+  ]
+}
